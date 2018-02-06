@@ -6,6 +6,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 
+import com.htsc.touchpull.widget.BezierView;
 import com.htsc.touchpull.widget.TouchPullView;
 
 public class MainActivity extends AppCompatActivity implements OnTouchListener {
@@ -14,6 +15,7 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener {
     private static final float TOUCH_MOVE_MAX_Y = 600; // 下拉的最大Y值
 
     private TouchPullView mTouchPullView;
+    private BezierView mBezierView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +23,7 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener {
         setContentView(R.layout.activity_main);
         findViewById(R.id.main_view).setOnTouchListener(this);
         mTouchPullView = findViewById(R.id.touch_pull_view);
+        mBezierView = findViewById(R.id.bezier_view);
 
     }
 
@@ -40,6 +43,9 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener {
                             1.0f : moveDistance / TOUCH_MOVE_MAX_Y;
                     if (null != mTouchPullView) {
                         mTouchPullView.setProgressChanged(progress);
+                    }
+                    if (null != mBezierView) {
+                        mBezierView.setProgressChanged(progress);
                     }
                 }
                 return true; // 消费掉

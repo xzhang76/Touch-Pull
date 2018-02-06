@@ -11,4 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <com.htsc.touchpull.widget.BezierView
+        android:layout_below="@id/touch_pull_view"
+        android:id="@+id/bezier_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </RelativeLayout>
