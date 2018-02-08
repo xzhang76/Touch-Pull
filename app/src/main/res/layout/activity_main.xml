@@ -11,8 +11,8 @@
         android:id="@+id/touch_pull_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        xzhang76:circlePathColor="#bebbaa"
-        xzhang76:bezierPathColor="#5c5e43"
+        xzhang76:circlePathColor="#5d8eca"
+        xzhang76:bezierPathColor="#142a81"
         xzhang76:circleMargin="8sp"/>
 
     <com.htsc.touchpull.widget.BezierView
