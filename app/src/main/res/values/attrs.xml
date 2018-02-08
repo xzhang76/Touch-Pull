@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="circleRadius" format="dimension" />
+    <attr name="controlTargetY" format="dimension" />
+    <attr name="targetAngle" format="dimension" />
+    <attr name="circlePathColor" format="color" />
+    <attr name="bezierPathColor" format="color" />
+    <attr name="circleMargin" format="dimension" />
+    <declare-styleable name="TouchPullView">
+        <attr name="circleRadius" />
+        <attr name="controlTargetY" />
+        <attr name="targetAngle" />
+        <attr name="circlePathColor" />
+        <attr name="bezierPathColor" />
+        <attr name="circleMargin" />
+    </declare-styleable>
+</resources>

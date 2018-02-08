@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:xzhang76="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,7 +10,10 @@
     <com.htsc.touchpull.widget.TouchPullView
         android:id="@+id/touch_pull_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        xzhang76:circlePathColor="#bebbaa"
+        xzhang76:bezierPathColor="#5c5e43"
+        xzhang76:circleMargin="8sp"/>
 
     <com.htsc.touchpull.widget.BezierView
         android:layout_below="@id/touch_pull_view"

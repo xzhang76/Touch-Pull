@@ -2,17 +2,18 @@ package com.htsc.touchpull.widget;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.os.Build;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
+
+import com.htsc.touchpull.R;
 
 import static com.htsc.touchpull.MainActivity.TOUCH_MOVE_MAX_Y;
 
@@ -26,58 +27,52 @@ public class TouchPullView extends View {
     private static final String TAG = "TouchPullView";
 
     private Paint mCirclePaint; // 绘制圆的画笔
-    private int mCircleRadius = 80; // 圆半径
+    private int mCircleRadius = 80; // 外圆半径
+    private int mCirCleMargin = 0; // 内外圆的margin
     private float mCirclePointX, mCirclePointY; // 圆心坐标
     private float mTouchMoveProgress; // 移动距离
 
     // 目标宽度 决定起点坐标的x
     private float mTargetWidth;
     // 控制点最终高度 决定控制点的y
-    private final static float CONTROL_Y = 4.0f;
+    private float mControlTargetY = 4.0f;
     // 贝塞尔曲线路径和画笔
     private Path mBezierPath = new Path();
     private Paint mBezierPaint;
     // 角度的变换 0~120度
-    private final static int TARGET_ANGLE = 120;
+    private int mTargetAngle = 120;
     // 释放时的动画
     private ValueAnimator mReleaseValueAnim;
     // 拉动的插值器
     private DecelerateInterpolator mProgressInterpolator = new DecelerateInterpolator();
 
     public TouchPullView(Context context) {
-        super(context);
-        init();
+        this(context, null);
     }
 
     public TouchPullView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        init();
-    }
-
-    public TouchPullView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        init();
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public TouchPullView(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-        init();
-    }
-
-    private void init() {
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.TouchPullView);
+        mCircleRadius = (int) typedArray.getDimension(R.styleable.TouchPullView_circleRadius, mCircleRadius);
+        mControlTargetY = typedArray.getDimension(R.styleable.TouchPullView_controlTargetY, mControlTargetY);
+        mTargetAngle = (int) typedArray.getDimension(R.styleable.TouchPullView_targetAngle, mTargetAngle);
+        int circlePathColor = typedArray.getColor(R.styleable.TouchPullView_circlePathColor, Color.DKGRAY);
+        int bezierPathColor = typedArray.getColor(R.styleable.TouchPullView_bezierPathColor, Color.GRAY);
+        mCirCleMargin = (int) typedArray.getDimension(R.styleable.TouchPullView_circleMargin, mCirCleMargin);
+        typedArray.recycle();
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setDither(true); // 防抖动
         paint.setStyle(Paint.Style.FILL); // 填充圆
-        paint.setColor(Color.DKGRAY);
+        paint.setColor(circlePathColor);
         mCirclePaint = paint;
 
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setDither(true); // 防抖动
         paint.setStyle(Paint.Style.FILL); // 填充曲线
-        paint.setColor(Color.GRAY);
+        paint.setColor(bezierPathColor);
         mBezierPaint = paint;
     }
+
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -86,7 +81,9 @@ public class TouchPullView extends View {
         int save = canvas.save();
         canvas.drawPath(mBezierPath, mBezierPaint);
         // 画圆
-        canvas.drawCircle(mCirclePointX, mCirclePointY, mCircleRadius, mCirclePaint);
+        canvas.drawCircle(mCirclePointX, mCirclePointY, mCircleRadius, mBezierPaint);
+        // 画内圆
+        canvas.drawCircle(mCirclePointX, mCirclePointY, mCircleRadius - mCirCleMargin, mCirclePaint);
         canvas.restoreToCount(save);
 
     }
@@ -151,7 +148,7 @@ public class TouchPullView extends View {
     // 控件尺寸变化时进行路径更新
     private void updatePathLayout() {
 
-            float moveProgress = mProgressInterpolator.getInterpolation(mTouchMoveProgress);
+        float moveProgress = mProgressInterpolator.getInterpolation(mTouchMoveProgress);
 
         // 重置线 这个非常重要
         mBezierPath.reset();
@@ -165,7 +162,7 @@ public class TouchPullView extends View {
         mCirclePointY = height - mCircleRadius;
 
         // 获取当前切线的弧度
-        double radian = Math.toRadians(getValueByLine(0, TARGET_ANGLE, moveProgress));
+        double radian = Math.toRadians(getValueByLine(0, mTargetAngle, moveProgress));
 
         // 起点坐标
         float lStartX = getValueByLine(0, mTargetWidth, moveProgress);
@@ -175,7 +172,7 @@ public class TouchPullView extends View {
         float lEndY = mCirclePointY + (float) (Math.cos(radian) * mCircleRadius);
 
         // 控制点坐标
-        float lControlY = getValueByLine(0, CONTROL_Y, moveProgress);
+        float lControlY = getValueByLine(0, mControlTargetY, moveProgress);
         float lControl2EndY = lEndY - lControlY;
         float lControlX = lEndX - (float) (lControl2EndY / Math.tan(radian));
 
