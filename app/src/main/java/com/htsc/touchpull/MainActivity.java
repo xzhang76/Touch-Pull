@@ -12,7 +12,7 @@ import com.htsc.touchpull.widget.TouchPullView;
 public class MainActivity extends AppCompatActivity implements OnTouchListener {
 
     private float mTouchStartY = 0; // 开始下拉的点
-    private static final float TOUCH_MOVE_MAX_Y = 600; // 下拉的最大Y值
+    public static final float TOUCH_MOVE_MAX_Y = 350; // 下拉的最大Y值
 
     private TouchPullView mTouchPullView;
     private BezierView mBezierView;
@@ -49,6 +49,11 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener {
                     }
                 }
                 return true; // 消费掉
+            case MotionEvent.ACTION_UP:
+                if (null != mTouchPullView) {
+                    mTouchPullView.release();
+                }
+                break;
             default:
                 break;
         }

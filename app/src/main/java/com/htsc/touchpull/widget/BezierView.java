@@ -76,7 +76,7 @@ public class BezierView extends View {
 
     private void init4Bezier() {
         // (0, 0) (300, 300) (200, 700) (500, 500) (700, 1200)
-        float[] xPoints = new float[]{0, 300, 200, 0, 700};
+        float[] xPoints = new float[]{0, 300, 200, 500, 700};
         float[] yPoints = new float[]{0, 300, 700, 1500, 0};
         float bezierXPoint = calculateBezier(mMoveProgress, xPoints);
         float bezierYPoint = calculateBezier(mMoveProgress, yPoints);
