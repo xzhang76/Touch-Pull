@@ -2,6 +2,7 @@ package com.htsc.touchpull.widget;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -211,5 +212,10 @@ public class TouchPullView extends View {
             mReleaseValueAnim.setFloatValues(mTouchMoveProgress, 0f);
         }
         mReleaseValueAnim.start();
+    }
+
+    @Override
+    protected void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
     }
 }

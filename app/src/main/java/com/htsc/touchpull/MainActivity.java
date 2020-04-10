@@ -1,7 +1,10 @@
 package com.htsc.touchpull;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -25,6 +28,26 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener {
         mTouchPullView = findViewById(R.id.touch_pull_view);
         mBezierView = findViewById(R.id.bezier_view);
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.water_drop_activity:
+                Intent intent = new Intent(this, WaterDropActivity.class);
+                startActivity(intent);
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
